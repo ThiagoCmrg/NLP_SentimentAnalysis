@@ -1,8 +1,10 @@
+import torch  # <-- Mova o torch para o TOPO
+import sys    # <-- Mova o sys para o TOPO
 import os
 import pandas as pd
 import re
 import warnings
-from transformers import pipeline
+from transformers import pipeline # <-- Transformers DEPOIS do torch
 import numpy as np
 from sklearn.metrics import accuracy_score, classification_report
 
@@ -98,11 +100,25 @@ def analyze_sentiments_batch_forced_binary(texts, batch_size=32):
 
 # --- ETAPA 3: CARREGAR MODELO E EXECUTAR ANÁLISE ---
 
+# --- ETAPA 3: CARREGAR MODELO E EXECUTAR ANÁLISE ---
+
+print("\nVerificando dispositivo (GPU/CPU)...")
+
+# Lógica explícita de seleção de dispositivo
+if torch.cuda.is_available():
+    device = torch.device("cuda:0")
+    print(f"✅ GPU detectada: {torch.cuda.get_device_name(0)}")
+    print("O pipeline usará a GPU.")
+else:
+    device = torch.device("cpu")
+    print("❌ Nenhuma GPU detectada. O pipeline usará a CPU (será lento).")
+
 print("\nCarregando modelo BERTweet-pt...")
-# top_k=None é crucial para pegarmos todos os scores
+# Passamos o *objeto* device, não mais o número 0
 sentiment_pipeline = pipeline("sentiment-analysis", 
                              model="pysentimiento/bertweet-pt-sentiment",
-                             top_k=None) 
+                             top_k=None,
+                             device=device)  # <-- MUDANÇA IMPORTANTE
 print("Modelo carregado!")
 
 # Pega os textos da coluna limpa
