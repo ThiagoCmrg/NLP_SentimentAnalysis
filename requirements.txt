@@ -11,3 +11,4 @@ notebook
 ipykernel
 tabulate
 datasets
+accelerate>=0.26.0
