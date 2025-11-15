@@ -1,0 +1,28 @@
+# Python virtual environments
+venv/
+.venv/
+env/
+ENV/
+.env/
+
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest cache
+.pytest_cache/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE/editor
+.vscode/
+
+# macOS
+.DS_Store
